@@ -1,3 +1,4 @@
 <resources>
-    <string name="app_name">login</string>
+    <string name="app_name">Taller 3</string>
+    <string name="title_activity_main_maps">mainMapsActivity</string>
 </resources>
