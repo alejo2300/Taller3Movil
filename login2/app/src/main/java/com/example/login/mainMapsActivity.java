@@ -2,6 +2,7 @@ package com.example.login;
 
 import androidx.fragment.app.FragmentActivity;
 
+import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
@@ -10,7 +11,10 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MapStyleOptions;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.example.login.databinding.ActivityMainMapsBinding;
 import com.google.firebase.auth.FirebaseAuth;
@@ -86,6 +90,7 @@ public class mainMapsActivity extends FragmentActivity implements OnMapReadyCall
                             Toast.makeText(mainMapsActivity.this, "User does not have location", Toast.LENGTH_LONG).show();
                         } else {
                             userLocation = new LatLng(myUser.getLatitude(), myUser.getLongitude());
+                            setNewPosition(userLocation);
                             Toast.makeText(mainMapsActivity.this, userLocation.toString(), Toast.LENGTH_LONG).show();
                         }
                     }
@@ -98,5 +103,12 @@ public class mainMapsActivity extends FragmentActivity implements OnMapReadyCall
         });
     }
 
+    private  void setNewPosition(LatLng curPos){
+        //Clear old markers
+        mMap.clear();
+        mMap.addMarker(new MarkerOptions().position(curPos).title("Posición actual").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(curPos));
+        mMap.moveCamera(CameraUpdateFactory.zoomTo(20));
+    }
 
 }
