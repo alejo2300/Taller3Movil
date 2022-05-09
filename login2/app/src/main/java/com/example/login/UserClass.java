@@ -2,8 +2,19 @@ package com.example.login;
 
 public class UserClass {
     String email, name, lastname, password, docId;
+    Double latitude, longitude;
 
     public UserClass() {
+    }
+
+    public UserClass(String email, String name, String lastname, String password, String docId, Double latitude, Double longitude) {
+        this.email = email;
+        this.name = name;
+        this.lastname = lastname;
+        this.password = password;
+        this.docId = docId;
+        this.latitude = latitude;
+        this.longitude = longitude;
     }
 
     public UserClass(String email, String name, String lastname, String password, String docId) {
@@ -52,5 +63,21 @@ public class UserClass {
 
     public void setDocId(String docId) {
         this.docId = docId;
+    }
+
+    public Double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(Double latitude) {
+        this.latitude = latitude;
+    }
+
+    public Double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(Double longitude) {
+        this.longitude = longitude;
     }
 }

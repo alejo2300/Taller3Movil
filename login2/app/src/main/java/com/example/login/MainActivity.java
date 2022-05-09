@@ -63,6 +63,8 @@ public class MainActivity extends AppCompatActivity {
                             }
                         }
                     });
+                } else {
+                    Toast.makeText(this, "Data fields failed", Toast.LENGTH_LONG).show();
                 }
                 Toast.makeText(this, "Username: " + username + " Password: " + password, Toast.LENGTH_LONG).show();
 
