@@ -47,17 +47,19 @@ public class MainActivity extends AppCompatActivity {
             });
 
             buttonLgn.setOnClickListener(v -> {
-                Toast.makeText(this, "Login", Toast.LENGTH_LONG).show();
-                String username = etUserName.getText().toString();
-                String password = etPassword.getText().toString();
+                String username = etUserName.getText().toString().trim();
+                String password = etPassword.getText().toString().trim();
 
                 if (validateUser(username) && validatePassword(password)) {
                     mAuth.signInWithEmailAndPassword(username, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
+                                Toast.makeText(MainActivity.this, "User logged", Toast.LENGTH_SHORT).show();
                                 Intent intent = new Intent(MainActivity.this, mainMapsActivity.class);
                                 startActivity(intent);
+                            } else {
+                                Toast.makeText(MainActivity.this, "Error: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                             }
                         }
                     });

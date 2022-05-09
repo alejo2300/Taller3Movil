@@ -3,6 +3,9 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/Diego/AndroidStudioProjects/Taller3_movil/login2/app/src/main/res/layout/activity_main.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/Diego/AndroidStudioProjects/Taller3_movil/login2/app/src/main/res/layout/activity_main_maps.xml" value="0.16" />
+        <entry key="..\:/Users/Diego/AndroidStudioProjects/Taller3_movil/login2/app/src/main/res/layout/activity_sigin.xml" value="0.20416666666666666" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.2" />
         <entry key="app/src/main/res/layout/activity_sigin.xml" value="0.22" />
       </map>
