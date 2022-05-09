@@ -1,17 +1,11 @@
 package com.example.login;
 
-import androidx.annotation.NonNull;
-import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.FragmentActivity;
 
-import android.Manifest;
-import android.annotation.SuppressLint;
-import android.content.pm.PackageManager;
-import android.location.Location;
 import android.os.Bundle;
+import android.util.Log;
+import android.widget.Toast;
 
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -19,13 +13,25 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.example.login.databinding.ActivityMainMapsBinding;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class mainMapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
     private ActivityMainMapsBinding binding;
+    //User
+    FirebaseAuth mAuth;
+    FirebaseUser loggedUser;
+    LatLng userLocation;
+    //Realtime db
+    FirebaseDatabase database;
+    DatabaseReference reference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +40,13 @@ public class mainMapsActivity extends FragmentActivity implements OnMapReadyCall
         binding = ActivityMainMapsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        mAuth = FirebaseAuth.getInstance();
+        database = FirebaseDatabase.getInstance();
+        loggedUser = mAuth.getCurrentUser();
+        if (loggedUser != null) { //If user is already logged in
+            Toast.makeText(mainMapsActivity.this, loggedUser.getUid(), Toast.LENGTH_LONG).show();
+        }
+        loadUsers();
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -58,4 +71,32 @@ public class mainMapsActivity extends FragmentActivity implements OnMapReadyCall
         mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
     }
+
+
+    public void loadUsers() {
+        reference = database.getReference("users");
+        reference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot singleSnapshot : dataSnapshot.getChildren()) {
+                    UserClass myUser = singleSnapshot.getValue(UserClass.class);
+                    Log.i("LoadUser", "Encontró usuario: " + myUser.getName());
+                    if (myUser.getEmail().equals(loggedUser.getEmail())){
+                        if (myUser.getLatitude() == null && myUser.getLongitude() == null){
+                            Toast.makeText(mainMapsActivity.this, "User does not have location", Toast.LENGTH_LONG).show();
+                        } else {
+                            userLocation = new LatLng(myUser.getLatitude(), myUser.getLongitude());
+                            Toast.makeText(mainMapsActivity.this, userLocation.toString(), Toast.LENGTH_LONG).show();
+                        }
+                    }
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.w("LoadUser", "error en la consulta", databaseError.toException());
+            }
+        });
+    }
+
+
 }

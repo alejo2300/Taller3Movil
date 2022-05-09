@@ -39,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
 
         if(user != null){ //check if user is logged in
             Intent intent = new Intent(MainActivity.this, mainMapsActivity.class);
+            startActivity(intent);
         }else {
 
             butttonSignIn.setOnClickListener(v -> {
@@ -64,10 +65,9 @@ public class MainActivity extends AppCompatActivity {
                         }
                     });
                 } else {
-                    Toast.makeText(this, "Data fields failed", Toast.LENGTH_LONG).show();
+                    Toast.makeText(this, "Data fields validation failed", Toast.LENGTH_LONG).show();
                 }
-                Toast.makeText(this, "Username: " + username + " Password: " + password, Toast.LENGTH_LONG).show();
-
+                //Toast.makeText(this, "Username: " + username + " Password: " + password, Toast.LENGTH_LONG).show();
             });
         }
     }

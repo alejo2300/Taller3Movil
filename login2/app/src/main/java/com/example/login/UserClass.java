@@ -23,6 +23,8 @@ public class UserClass {
         this.lastname = lastname;
         this.password = password;
         this.docId = docId;
+        this.latitude = null;
+        this.longitude = null;
     }
 
     public String getEmail() {
