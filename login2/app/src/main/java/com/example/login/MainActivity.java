@@ -1,5 +1,6 @@
 package com.example.login;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -8,6 +9,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.ktx.Firebase;
@@ -43,22 +47,34 @@ public class MainActivity extends AppCompatActivity {
             });
 
             buttonLgn.setOnClickListener(v -> {
+                Toast.makeText(this, "Login", Toast.LENGTH_LONG).show();
                 String username = etUserName.getText().toString();
                 String password = etPassword.getText().toString();
 
                 if (validateUser(username) && validatePassword(password)) {
-                    mAuth.signInWithEmailAndPassword(username, password).addOnCompleteListener(this, task -> {
-                        Toast.makeText(this, "Login Successful", Toast.LENGTH_LONG).show();
-                        Intent intent = new Intent(MainActivity.this, mainMapsActivity.class);
-                        startActivity(intent);
-                    }).addOnFailureListener(this, e -> {});
-                } else {
-                    Toast.makeText(this, "Login Failed", Toast.LENGTH_LONG).show();
+                    mAuth.signInWithEmailAndPassword(username, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (task.isSuccessful()) {
+                                Intent intent = new Intent(MainActivity.this, mainMapsActivity.class);
+                                startActivity(intent);
+                            }
+                        }
+                    });
                 }
-
                 Toast.makeText(this, "Username: " + username + " Password: " + password, Toast.LENGTH_LONG).show();
 
             });
+        }
+    }
+
+    private void updateUI(FirebaseUser userreg) {
+        if(userreg != null){
+            Intent intent = new Intent(MainActivity.this, mainMapsActivity.class);
+            startActivity(intent);
+        }else {
+            etUserName.setText("");
+            etPassword.setText("");
         }
     }
 
