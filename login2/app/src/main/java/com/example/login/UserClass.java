@@ -3,6 +3,7 @@ package com.example.login;
 public class UserClass {
     String email, name, lastname, password, docId;
     Double latitude, longitude;
+    boolean available;
 
     public UserClass() {
     }
@@ -15,6 +16,7 @@ public class UserClass {
         this.docId = docId;
         this.latitude = latitude;
         this.longitude = longitude;
+        this.available = false;
     }
 
     public UserClass(String email, String name, String lastname, String password, String docId) {
@@ -25,6 +27,7 @@ public class UserClass {
         this.docId = docId;
         this.latitude = null;
         this.longitude = null;
+        this.available = false;
     }
 
     public String getEmail() {
@@ -81,5 +84,13 @@ public class UserClass {
 
     public void setLongitude(Double longitude) {
         this.longitude = longitude;
+    }
+
+    public boolean isAvailable() {
+        return available;
+    }
+
+    public void setAvailable(boolean available) {
+        this.available = available;
     }
 }
