@@ -1,7 +1,7 @@
 package com.example.login;
 
 public class UserClass {
-    String email, name, lastname, password, docId;
+    String email, name, lastname, password, docId, image;
     Double latitude, longitude;
     boolean available;
 
@@ -92,5 +92,13 @@ public class UserClass {
 
     public void setAvailable(boolean available) {
         this.available = available;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 }
