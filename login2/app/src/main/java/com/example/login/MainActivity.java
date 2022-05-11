@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
         FirebaseUser user = mAuth.getCurrentUser();
 
         if(user != null){ //check if user is logged in
-            Intent intent = new Intent(MainActivity.this, mainMapsActivity.class);
+            Intent intent = new Intent(MainActivity.this, mapAndMenu.class);
             startActivity(intent);
         }else {
 
@@ -68,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
                                 Toast.makeText(MainActivity.this, "User logged", Toast.LENGTH_SHORT).show();
-                                Intent intent = new Intent(MainActivity.this, mainMapsActivity.class);
+                                Intent intent = new Intent(MainActivity.this, mapAndMenu.class);
                                 startActivity(intent);
                             } else {
                                 Toast.makeText(MainActivity.this, "Error: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
@@ -85,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void updateUI(FirebaseUser userreg) {
         if(userreg != null){
-            Intent intent = new Intent(MainActivity.this, mainMapsActivity.class);
+            Intent intent = new Intent(MainActivity.this, mapAndMenu.class);
             startActivity(intent);
         }else {
             etUserName.setText("");

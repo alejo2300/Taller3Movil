@@ -18,7 +18,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Login">
         <activity
-            android:name=".ListAvailablesActivity"
+            android:name=".mapAndMenu"
             android:exported="false" />
         <!--
              TODO: Before you run your application, you need a Google Maps API key.
@@ -35,6 +35,9 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyCvt7CLO6Dqvw0B_BqO9Y3YDfAk8IVGLkg" />
 
+        <activity
+            android:name=".ListAvailablesActivity"
+            android:exported="false" />
         <activity
             android:name=".mainMapsActivity"
             android:exported="false"
