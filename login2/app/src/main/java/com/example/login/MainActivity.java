@@ -36,6 +36,9 @@ public class MainActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser user = mAuth.getCurrentUser();
 
+        Intent intentService = new Intent(MainActivity.this, AvailablesListenerService.class);
+        startService(intentService);
+
         if(user != null){ //check if user is logged in
             Intent intent = new Intent(MainActivity.this, mapAndMenu.class);
             startActivity(intent);

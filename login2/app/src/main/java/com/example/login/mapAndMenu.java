@@ -1,5 +1,7 @@
 package com.example.login;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -21,6 +23,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -68,6 +71,38 @@ public class mapAndMenu extends AppCompatActivity {
         readJsonFile();
 
 
+        //Listen changes on available users
+        /*reference = database.getReference("users");
+        reference.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                UserClass myUser = snapshot.getValue(UserClass.class);
+                if (myUser.isAvailable()) {
+                    Log.i("ChildEvent", "User is now available");
+                    Toast.makeText(mapAndMenu.this, "Data: " + myUser.getName() + " available: " + String.valueOf(myUser.isAvailable()), Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });*/
     }
 
     public LatLng getDbPosition() {
@@ -96,11 +131,10 @@ public class mapAndMenu extends AppCompatActivity {
         }
 
         for(int j = 0; j < locationsLatLng.size(); j++) {
-            Toast.makeText(mapAndMenu.this,
+            Log.i("Get json data",
                     j + ": lat " + locationsLatLng.get(j).latitude +
                             ", long " + locationsLatLng.get(j).longitude +
-                            ", name " + locationsName.get(j),
-                    Toast.LENGTH_LONG).show();
+                            ", name " + locationsName.get(j));
             //mMap.addMarker(new MarkerOptions().position(locationsLatLng.get(j)).title(locationsName.get(j)).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)));
         }
     }

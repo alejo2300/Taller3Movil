@@ -17,6 +17,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Login">
+        <service
+            android:name=".AvailablesListenerService"
+            android:exported="false"></service>
+
         <activity
             android:name=".mapAndMenu"
             android:exported="false" />
