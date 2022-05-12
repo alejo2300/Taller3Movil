@@ -3,6 +3,7 @@ package com.example.login;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -54,6 +55,9 @@ public class mapAndMenu extends AppCompatActivity {
     ArrayList<LatLng> locationsLatLng = new ArrayList<>();
     ArrayList<String> locationsName = new ArrayList<>();
 
+    String otherName = null;
+    LatLng otherLocation = null;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,6 +107,40 @@ public class mapAndMenu extends AppCompatActivity {
 
             }
         });*/
+        otherName = getExtra();
+        if (otherName != null) {
+            otherLocation = getLocation();
+            /*FragmentManager fm = getSupportFragmentManager();
+            MapsFragment fragment = (MapsFragment) fm.findFragmentById(R.id.map);
+            fragment.setClickedUserPosition(otherLocation,otherName);*/
+        }
+    }
+
+    public String getOtherName(){
+        return otherName;
+    }
+
+    public LatLng getOtherLocation(){
+        return otherLocation;
+    }
+
+    private LatLng getLocation() {
+        LatLng otherLocation = null;
+        if (getIntent().hasExtra("userLocation")) {
+            otherLocation = getIntent().getParcelableExtra("userLocation");
+        }
+        return otherLocation;
+    }
+
+    private String getExtra() {
+        String newName = null;
+        if (getIntent().hasExtra("name")) {
+            newName = getIntent().getStringExtra("name");
+            Log.i("Extra", newName);
+            System.out.println("Extra: " + newName);
+            Toast.makeText(mapAndMenu.this, "Extra: " + newName, Toast.LENGTH_LONG).show();
+        }
+        return newName;
     }
 
     public LatLng getDbPosition() {

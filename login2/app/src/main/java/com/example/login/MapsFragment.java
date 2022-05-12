@@ -5,6 +5,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,7 +23,12 @@ import java.util.ArrayList;
 
 public class MapsFragment extends Fragment {
 
+    //Generate a GoogleMap object
+    GoogleMap mMap;
+
     private OnMapReadyCallback callback = new OnMapReadyCallback() {
+
+
 
         /**
          * Manipulates the map once available.
@@ -35,6 +41,7 @@ public class MapsFragment extends Fragment {
          */
         @Override
         public void onMapReady(GoogleMap googleMap) {
+            mMap = googleMap;
             LatLng sydney = new LatLng(-34, 151);
             //googleMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
 
@@ -45,18 +52,42 @@ public class MapsFragment extends Fragment {
                 googleMap.addMarker(new MarkerOptions().position(dbPosition).title("Marker user in DB"));
                 googleMap.moveCamera(CameraUpdateFactory.newLatLng(dbPosition));
                 Toast.makeText(getContext(), "User position set", Toast.LENGTH_SHORT).show();
+                googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(dbPosition, 15));
             }
 
             //Put markers readed in Json(First read in mapAndMenu and we send it to this fragment)
             ArrayList<LatLng> markersPositions = mapActivity.getLocationsLatLng();
             ArrayList<String> markersNames = mapActivity.getLocationsName();
-            for (int i = 0; i < markersPositions.size(); i++) {
-                if(markersNames.get(i) != null && markersPositions.get(i) != null) {
-                    googleMap.addMarker(new MarkerOptions().position(markersPositions.get(i)).title(markersNames.get(i)));
+
+            setinterestMarkers(markersPositions, markersNames);
+            chekAndPutOther();
+        }
+
+        private void chekAndPutOther() {
+            if(((mapAndMenu)getActivity()).getOtherName() != null &&  ((mapAndMenu)getActivity()).getOtherLocation() != null){
+                LatLng otherPosition = ((mapAndMenu)getActivity()).getOtherLocation();
+                String otherName = ((mapAndMenu)getActivity()).getOtherName();
+                mMap.addMarker(new MarkerOptions().position(otherPosition).title(otherName));
+            }
+        }
+
+        private void setinterestMarkers(ArrayList<LatLng> markersPositions, ArrayList<String> markersNames) {
+            if (mMap != null) {
+                for (int i = 0; i < markersPositions.size(); i++) {
+                    if(markersNames.get(i) != null && markersPositions.get(i) != null) {
+                        mMap.addMarker(new MarkerOptions().position(markersPositions.get(i)).title(markersNames.get(i)));
+                    }
                 }
             }
         }
     };
+
+    public void setClickedUserPosition(LatLng position, String name) {
+        Log.d("MapsFragment", "setClickedUserPosition");
+        if(mMap != null) {
+            mMap.addMarker(new MarkerOptions().position(position).title("Marker in " + name + " position"));
+        }
+    }
 
     @Nullable
     @Override

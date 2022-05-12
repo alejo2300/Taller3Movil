@@ -83,7 +83,7 @@ public class AvailablesListenerService extends IntentService {
                     Intent intent;
                     if(loggedUser != null){
                         Log.i("Notification", "Going to show map");
-                        intent = new Intent(AvailablesListenerService.this, MainActivity.class);
+                        intent = new Intent(AvailablesListenerService.this, mapAndMenu.class);
                     } else {
                         intent = new Intent(AvailablesListenerService.this, MainActivity.class);
                     }

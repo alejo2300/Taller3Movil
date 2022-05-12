@@ -21,6 +21,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
@@ -63,6 +64,15 @@ public class ListAvailablesActivity extends AppCompatActivity {
                                     intent.putExtra("lat", model.getLatitude());
                                     intent.putExtra("lng", model.getLongitude());
                                     startActivity(intent);*/
+
+                                    //Create LatLng object for the user
+                                    LatLng userLocation = new LatLng(model.getLatitude(), model.getLongitude());
+
+
+                                    Intent intent = new Intent(ListAvailablesActivity.this, mapAndMenu.class);
+                                    intent.putExtra("name", model.getName());
+                                    intent.putExtra("userLocation", userLocation);
+                                    startActivity(intent);
                                 }
                             }
                         });
