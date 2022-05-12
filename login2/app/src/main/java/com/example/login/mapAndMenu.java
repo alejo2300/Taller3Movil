@@ -57,17 +57,16 @@ public class mapAndMenu extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map_and_menu);
 
-
         mAuth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
         loggedUser = mAuth.getCurrentUser();
-
 
         if (loggedUser != null) { //If user is already logged in
             Toast.makeText(mapAndMenu.this, loggedUser.getUid(), Toast.LENGTH_LONG).show();
         }
         loadUsers();
         readJsonFile();
+
 
     }
 
@@ -147,14 +146,6 @@ public class mapAndMenu extends AppCompatActivity {
         });
     }
 
-    /*private  void setNewPosition(LatLng curPos){
-        //Clear old markers
-        mMap.clear();
-        mMap.addMarker(new MarkerOptions().position(curPos).title("Posición actual").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(curPos));
-        mMap.moveCamera(CameraUpdateFactory.zoomTo(20));
-    }*/
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -164,7 +155,6 @@ public class mapAndMenu extends AppCompatActivity {
         return true;
     }
 
-
    @Override
     public boolean onOptionsItemSelected(MenuItem item){
         int itemClicked = item.getItemId();
@@ -172,11 +162,12 @@ public class mapAndMenu extends AppCompatActivity {
             logout();
         } else if (itemClicked == R.id.menuAvailable){
             //Set user as available
-            //setUserAvailable();
-            //Toast.makeText(mainMapsActivity.this, "available", Toast.LENGTH_LONG).show();
+            setUserAvailable();
         } else if (itemClicked == R.id.menuListAvailables){
             //Show available users
-            Toast.makeText(mapAndMenu.this, "list available", Toast.LENGTH_LONG).show();
+            //Toast.makeText(mapAndMenu.this, "list available", Toast.LENGTH_LONG).show();
+            Intent intent = new Intent(mapAndMenu.this, ListAvailablesActivity.class);
+            startActivity(intent);
         }
         return super.onOptionsItemSelected(item);
     }
@@ -186,5 +177,15 @@ public class mapAndMenu extends AppCompatActivity {
         Intent intent = new Intent(mapAndMenu.this, MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
+    }
+
+    private void setUserAvailable() {
+        reference = database.getReference("users/"+loggedUser.getUid());
+        if (reference.child("available").equals(true)) {
+            Toast.makeText(mapAndMenu.this, "User is already available", Toast.LENGTH_LONG).show();
+        } else {
+            reference.child("available").setValue(true);
+            Toast.makeText(mapAndMenu.this, "User is now available", Toast.LENGTH_LONG).show();
+        }
     }
 }

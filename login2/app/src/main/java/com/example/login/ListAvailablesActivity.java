@@ -9,6 +9,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -18,6 +21,9 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -52,6 +58,7 @@ public class ListAvailablesActivity extends AppCompatActivity {
                                 if (model.getLatitude() == null) {
                                     Toast.makeText(ListAvailablesActivity.this, "User does not have location", Toast.LENGTH_SHORT).show();
                                 } else {
+                                    Toast.makeText(ListAvailablesActivity.this, "User has location", Toast.LENGTH_SHORT).show();
                                     /*Intent intent = new Intent(ListAvailablesActivity.this, MapUserActivity.class);
                                     intent.putExtra("lat", model.getLatitude());
                                     intent.putExtra("lng", model.getLongitude());

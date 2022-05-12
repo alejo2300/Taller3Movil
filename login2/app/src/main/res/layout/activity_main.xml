@@ -58,15 +58,6 @@
         app:layout_constraintTop_toBottomOf="@+id/userpassword"
         app:layout_constraintVertical_bias="0.24" />
 
-    <Button
-        android:id="@+id/availables"
-        android:layout_width="140dp"
-        android:layout_height="wrap_content"
-        android:text="Availables test"
-        tools:layout_editor_absoluteX="144dp"
-        tools:layout_editor_absoluteY="642dp"
-        tools:ignore="MissingConstraints" />
-
     <androidx.constraintlayout.widget.Group
         android:id="@+id/group"
         android:layout_width="wrap_content"

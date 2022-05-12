@@ -21,25 +21,19 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.StorageTask;
@@ -48,7 +42,7 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.HashMap;
 
-public class sigin extends AppCompatActivity {
+public class SignInActivity extends AppCompatActivity {
     private static final int IMAGE_PICKER_REQUEST = 3;
     EditText mail, name, lname, passwd, iduser;
     Button siginBtn, selectPPBtn;
@@ -72,7 +66,7 @@ public class sigin extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_sigin);
+        setContentView(R.layout.activity_signin);
 
         mail = findViewById(R.id.mail);
         name = findViewById(R.id.name);
@@ -88,26 +82,26 @@ public class sigin extends AppCompatActivity {
         reference = database.getReference("users");
 
         if (mAuth.getCurrentUser() != null) { //If user is already logged in
-            Intent intent = new Intent(sigin.this, mainMapsActivity.class);
+            Intent intent = new Intent(SignInActivity.this, mapAndMenu.class);
             startActivity(intent);
         }
 
         selectPPBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (ActivityCompat.checkSelfPermission(sigin.this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                    requestPermission(sigin.this, Manifest.permission.READ_EXTERNAL_STORAGE, "Without this permission we can not access to files", IMAGE_PICKER_REQUEST);
+                if (ActivityCompat.checkSelfPermission(SignInActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                    requestPermission(SignInActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE, "Without this permission we can not access to files", IMAGE_PICKER_REQUEST);
                 } else {
                     chooseImage();
                 }
             }
         });
 
-        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(sigin.this);
-        if (ActivityCompat.checkSelfPermission(sigin.this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(SignInActivity.this);
+        if (ActivityCompat.checkSelfPermission(SignInActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             getLocation();
         } else {
-            ActivityCompat.requestPermissions(sigin.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 44);
+            ActivityCompat.requestPermissions(SignInActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 44);
         }
 
         siginBtn.setOnClickListener(new View.OnClickListener() {
@@ -144,7 +138,7 @@ public class sigin extends AppCompatActivity {
                     return;
                 }
 
-                Toast.makeText(sigin.this, "Signing in...", Toast.LENGTH_SHORT).show();
+                Toast.makeText(SignInActivity.this, "Signing in...", Toast.LENGTH_SHORT).show();
                 UserClass userClass;
                 if (currentLocation == null){
                     userClass = new UserClass(mailS, nameS, lnameS, passwdS, iduserS);
@@ -164,12 +158,12 @@ public class sigin extends AppCompatActivity {
                             storageProfilePicRef = FirebaseStorage.getInstance().getReference().child("profile_pic");
                             uploadProfileImage(user);
 
-                            Toast.makeText(sigin.this, "User created", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(SignInActivity.this, "User created", Toast.LENGTH_SHORT).show();
                             //Go to map activity
-                            Intent intent = new Intent(sigin.this, mainMapsActivity.class);
+                            Intent intent = new Intent(SignInActivity.this, mapAndMenu.class);
                             startActivity(intent);
                         } else {
-                            Toast.makeText(sigin.this, "Error: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(SignInActivity.this, "Error: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
@@ -198,7 +192,7 @@ public class sigin extends AppCompatActivity {
                 Toast.makeText(context, justification, Toast.LENGTH_LONG).show();
             }
             // request the permission.
-            ActivityCompat.requestPermissions(sigin.this,
+            ActivityCompat.requestPermissions(SignInActivity.this,
                     new String[]{permission},
                     requestCode);
         }
@@ -229,13 +223,13 @@ public class sigin extends AppCompatActivity {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 chooseImage();
             } else {
-                Toast.makeText(sigin.this, "You can not choose image from gallery without this permission", Toast.LENGTH_LONG).show();
+                Toast.makeText(SignInActivity.this, "You can not choose image from gallery without this permission", Toast.LENGTH_LONG).show();
             }
         } else if (requestCode == 44) { //Fine location permission
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 getLocation();
             } else {
-                Toast.makeText(sigin.this, "You can not save latitude and longitude without this permission", Toast.LENGTH_LONG).show();
+                Toast.makeText(SignInActivity.this, "You can not save latitude and longitude without this permission", Toast.LENGTH_LONG).show();
             }
         }
     }
@@ -276,7 +270,7 @@ public class sigin extends AppCompatActivity {
                 }
             });
         } else {
-            Toast.makeText(sigin.this, "Image not selected", Toast.LENGTH_SHORT).show();
+            Toast.makeText(SignInActivity.this, "Image not selected", Toast.LENGTH_SHORT).show();
         }
     }
 }
